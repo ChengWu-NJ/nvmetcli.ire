@@ -48,7 +48,9 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{python_sitelib}
 %dir %{_sysconfdir}/nvmet
-/usr/sbin/nvmetcli /usr/sbin/ecode_uuid.py  /usr/sbin/nguidwithdev.py
+/usr/sbin/nvmetcli
+/usr/sbin/ecode_uuid.py
+/usr/sbin/nguidwithdev.py
 %{_unitdir}/nvmet.service
 %doc COPYING README
 
