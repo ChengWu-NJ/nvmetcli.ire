@@ -2,7 +2,7 @@
 
 nvmetcli git clone from git://git.infradead.org/users/hch/nvmetcli.git commit:0a6b088 tag:v0.7
 
-下面描述涉及的目录环境是 redhat/centos8.0，7.6，7.4
+下面描述涉及的目录环境是 redhat/centos8.0，7.6，7.4。只支持python3.
 git source: git clone [http://10.45.10.107/wucheng/nvmetcli.ire](http://10.45.10.107/wucheng/nvmetcli.ire)
 ## 基本原理
 
@@ -53,6 +53,8 @@ git source: git clone [http://10.45.10.107/wucheng/nvmetcli.ire](http://10.45.10
 - nvme target服务端的block设备盘没有设置有含义名称的属性，这是nvme规范缺少的。
 - 如果用一个subsystem下只挂一个block设备，通过subsystem的目录名称来设置有含义的block盘名称，会导致大量的内存消耗。
 ## 使用方式
+- rpm包文件在dist目录中。yum localinstall therpmfile
+- 如果要将rpm加入os安装包中，请加入3个rpm依赖包 python3-configshell python3-kmod python3-six
 - 和设置 nguid属性一样，在nsid的path下，使用命令 set device nguid_bydev=*somemeaningfuldevicename*
 - ls 会同时显示 nguid和nguid_bydev两个属性的值。
  
