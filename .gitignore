@@ -2,7 +2,6 @@
 *.swo
 build-stamp
 build/*
-dist/*
 *.pyc
 *.pyc
 
