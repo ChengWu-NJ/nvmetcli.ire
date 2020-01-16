@@ -8,7 +8,7 @@ URL:		http://git.infradead.org/users/hch/nvmetcli.git
 Source:         nvmetcli-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-rpmroot
 BuildArch:      noarch
-BuildRequires:  python3-devel pythoni3-setuptools systemd-units
+BuildRequires:  python3-devel python3-setuptools systemd-units
 Requires:	python-configshell python-kmod python-six
 Requires(post): systemd
 Requires(preun): systemd
