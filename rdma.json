@@ -8,7 +8,7 @@
     {
       "addr": {
         "adrfam": "ipv4", 
-        "traddr": "192.168.6.68", 
+        "traddr": "10.45.69.206", 
         "treq": "not specified", 
         "trsvcid": "4420", 
         "trtype": "rdma"
