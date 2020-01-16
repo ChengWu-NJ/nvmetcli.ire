@@ -26,6 +26,10 @@ import configshell_fb as configshell
 import nvmet as nvme
 from string import hexdigits
 import uuid
+import nguidwithdev
+
+dev2nguid = nguidwithdev.dev2nguid
+nguid2dev = nguidwithdev.nguid2dev
 
 
 def ngiud_set(nguid):
@@ -43,21 +47,38 @@ class UINode(configshell.node.ConfigNode):
         self.refresh()
 
     def _init_group(self, group):
+        def get_attr_wrap(self, attr):
+            if group=='device' and attr=='nguid_bydev':
+                return self.cfnode.get_attr('device', 'nguid')
+            else:
+                return self.cfnode.get_attr(group, attr)
+
         setattr(self.__class__, "ui_getgroup_%s" % group,
                 lambda self, attr:
-                    self.cfnode.get_attr(group, attr))
+                    get_attr_wrap(self, attr))
+
+        def set_attr_wrap(self, attr, value):
+            if group=='device' and attr=='nguid_bydev':
+                self.cfnode.set_attr('device', 'nguid', dev2nguid(value))
+            else:
+                self.cfnode.set_attr(group, attr, value)
+
         setattr(self.__class__, "ui_setgroup_%s" % group,
-                lambda self, attr, value:
-                    self.cfnode.set_attr(group, attr, value))
+                lambda self, attr, value: set_attr_wrap(self, attr, value))
 
         attrs = self.cfnode.list_attrs(group)
         attrs_ro = self.cfnode.list_attrs(group, writable=False)
+        #device group add aided attr -- nguid_bydev
+        if group == 'device':
+            attrs.append('nguid_bydev')
+
         for attr in attrs:
             writable = attr not in attrs_ro
 
             name = "ui_desc_%s" % group
             t, d = getattr(self.__class__, name, {}).get(attr, ('string', ''))
             self.define_config_group_param(group, attr, t, d, writable)
+
 
     def refresh(self):
         self._children = set([])
@@ -214,6 +235,7 @@ class UINamespaceNode(UINode):
     ui_desc_device = {
         'path': ('string', 'Backing device path.'),
         'nguid': ('string', 'Namspace Global Unique Identifier.'),
+        'nguid_bydev': ('string', 'Setting nguid by meaningful device name'),
         'uuid': ('string', 'Namespace Universally Unique Identifier.'),
     }
 
@@ -280,6 +302,7 @@ class UINamespaceNode(UINode):
         ns_nguid = self.cfnode.get_attr("device", "nguid")
         if ngiud_set(ns_nguid):
             info.append("nguid=" + ns_nguid)
+            info.append("nguid_bydev=" + nguid2dev(ns_nguid))
         if self.cfnode.grpid != 0:
             info.append("grpid=" + str(self.cfnode.grpid))
         info.append("enabled" if self.cfnode.get_enable() else "disabled")

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/python3
 '''
 This file is part of ConfigShell.
 Copyright (c) 2011-2013 by Datera, Inc
@@ -19,13 +19,12 @@ under the License.
 from setuptools import setup
 
 setup(
-    name = 'nvmetcli',
+    name = 'nvmetcli.ire',
     version = 0.7,
-    description = 'NVMe target configuration tool',
+    description = 'NVMe target configuration tool. A branch with adding nguid_bydev of git://git.infradead.org/users/hch/nvmetcli.git commit:0a6b088d tag:v0.7',
     license = 'Apache 2.0',
-    maintainer = 'Christoph Hellwig',
-    maintainer_email = 'hch@lst.de',
     test_suite='nose2.collector.collector',
     packages = ['nvmet'],
-    scripts=['nvmetcli']
+    scripts=['nvmetcli', 'nguidwithdev.py', 'ecode_uuid.py'],
+    install_requires=['configshell-fb>=1.1.25', 'pyparsing>=2.1.10']
     )
